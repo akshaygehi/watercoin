@@ -7,7 +7,7 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.mllib.linalg.Vector;
 
-public class MainKmeans {
+public class FraudDetectionMain {
 	
 	private static final String SAMPLE = "/Users/akshaygehi/Spark/CleanWaterFraudDetection/src/main/resources/LrgInd/IND100B.csv";
 	
@@ -22,8 +22,11 @@ public class MainKmeans {
 		JavaRDD<Vector> inputVectors = parser.parseData(input);
 		inputVectors.cache();
 		
-		FraudDetectionStrategy strategy = new KmeansFraudDetectionStrategy();
-		strategy.trainModel(inputVectors);
+		FraudDetectionStrategy strategy1 = new KmeansFraudDetectionStrategy();
+		strategy1.trainModel(inputVectors);
+		
+		FraudDetectionStrategy strategy2 = new GaussianMixtureDetectionStrategy();
+		strategy2.trainModel(inputVectors);
 		
 	}
 	
