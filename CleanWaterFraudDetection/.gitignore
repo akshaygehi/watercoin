@@ -1,2 +1,4 @@
 /bin/
 /target/
+/models/
+/.DS_Store

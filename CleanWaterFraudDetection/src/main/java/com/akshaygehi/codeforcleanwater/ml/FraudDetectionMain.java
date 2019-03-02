@@ -32,6 +32,8 @@ public class FraudDetectionMain {
 		FraudDetectionStrategy strategy2 = new GaussianMixtureDetectionStrategy();
 		strategy2.trainModel(inputVectors);
 		
+		strategy1.saveModel();
+		strategy2.saveModel();
 	}
 
 	private static String locateSampleFile() throws FileNotFoundException {

@@ -17,6 +17,8 @@ public class KmeansFraudDetectionStrategy implements FraudDetectionStrategy {
 	int numClusters = 3;
 	int numIterations = 5;
 	
+	private static final String MODEL_LOCATION = "models/KMeansModel.mdl";
+	
 	KMeansModel model;
 	private double cost;
 	
@@ -41,13 +43,12 @@ public class KmeansFraudDetectionStrategy implements FraudDetectionStrategy {
 
 	@Override
 	public void saveModel() {
-		model.save(SparkSupport.sc.sc(), "target/org/apache/spark/JavaKMeansExample/KMeansModel");
+		model.save(SparkSupport.sc.sc(), MODEL_LOCATION);
 	}
 
 	@Override
 	public void loadModel() {
-		model = KMeansModel.load(SparkSupport.sc.sc(),
-				  "target/org/apache/spark/JavaKMeansExample/KMeansModel");
+		model = KMeansModel.load(SparkSupport.sc.sc(), MODEL_LOCATION);
 	}
 
 }
