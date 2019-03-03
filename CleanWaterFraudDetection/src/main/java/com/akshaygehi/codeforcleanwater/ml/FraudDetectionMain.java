@@ -14,7 +14,6 @@ public class FraudDetectionMain {
 	private static final String SAMPLE_FILE = "LrgInd/IND100B.csv";
 	
 	public static void main(String[] args) throws Exception {
-		VectorParser parser = new VectorParser();
 		JavaSparkContext sc = SparkSupport.sc;
 		
 		String file = locateSampleFile();
@@ -23,6 +22,7 @@ public class FraudDetectionMain {
 		JavaRDD<String> input = parseFile(sc, file);
 		
 		// Convert this into vector so we can use various algorithms on the same data
+		VectorParser parser = new VectorParser();
 		JavaRDD<Vector> inputVectors = parser.parseData(input);
 		inputVectors.cache();
 		
@@ -32,8 +32,8 @@ public class FraudDetectionMain {
 		FraudDetectionStrategy strategy2 = new GaussianMixtureDetectionStrategy();
 		strategy2.trainModel(inputVectors);
 		
-		strategy1.saveModel();
-		strategy2.saveModel();
+//		strategy1.saveModel();
+//		strategy2.saveModel();
 	}
 
 	private static String locateSampleFile() throws FileNotFoundException {

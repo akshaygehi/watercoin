@@ -14,10 +14,10 @@ import org.apache.spark.mllib.linalg.Vector;
  */
 public class KmeansFraudDetectionStrategy implements FraudDetectionStrategy {
 
-	int numClusters = 3;
-	int numIterations = 5;
+	private static final int MAX_ITERATIONS = 10;
+	private static final int NUMBER_OF_CLUSTERS_K = 2;
 	
-	private static final String MODEL_LOCATION = "models/KMeansModel.mdl";
+	private static final String MODEL_LOCATION = "models/KMeansModel";
 	
 	KMeansModel model;
 	private double cost;
@@ -25,7 +25,7 @@ public class KmeansFraudDetectionStrategy implements FraudDetectionStrategy {
 	@Override
 	public void trainModel(JavaRDD<Vector> data) {
 		// Cluster the data into two classes using Kmeans
-		model = KMeans.train(data.rdd(), numClusters, numIterations);
+		model = KMeans.train(data.rdd(), NUMBER_OF_CLUSTERS_K, MAX_ITERATIONS);
 		
 		System.out.println("Cluster centers:");
 		for (Vector center: model.clusterCenters()) {
@@ -36,8 +36,8 @@ public class KmeansFraudDetectionStrategy implements FraudDetectionStrategy {
 		System.out.println("Cost: " + cost);
 
 		// Evaluate clustering by computing Within Set Sum of Squared Errors
-		double WSSSE = model.computeCost(data.rdd());
-		System.out.println("Within Set Sum of Squared Errors = " + WSSSE);
+		double wsse = model.computeCost(data.rdd());
+		System.out.println("Within Set Sum of Squared Errors = " + wsse);
 		
 	}
 
