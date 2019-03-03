@@ -3,8 +3,8 @@
  */
 package com.akshaygehi.codeforcleanwater.ml;
 
-import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.ml.PipelineStage;
+import java.io.IOException;
+
 import org.apache.spark.ml.clustering.GaussianMixture;
 import org.apache.spark.ml.clustering.GaussianMixtureModel;
 import org.apache.spark.sql.Dataset;
@@ -44,7 +44,13 @@ public class GaussianMixtureDetectionStrategy implements FraudDetectionStrategy 
 	 */
 	@Override
 	public void saveModel() {
-//		gmm.save(SparkSupport.sc.sc(), MODEL_LOCATION);
+		// Save data.
+		try {
+			gmm.write().save(MODEL_LOCATION);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -52,17 +58,23 @@ public class GaussianMixtureDetectionStrategy implements FraudDetectionStrategy 
 	 */
 	@Override
 	public void loadModel() {
-		JavaSparkContext sc = SparkSupport.sc;
-//		gmm = GaussianMixtureModel.load(sc.sc(), MODEL_LOCATION);
+		// Loads data.
+		Dataset<Row> dataset = SparkSupport.sparkSession.read().format("libsvm").load(MODEL_LOCATION);
+		gmm = getStage().fit(dataset);
 	}
 
 	@Override
-	public PipelineStage getStage() {
+	public GaussianMixture getStage() {
 		GaussianMixture gm = new GaussianMixture()
 				.setK(NUMBER_OF_CLUSTERS_K)
 				.setMaxIter(MAX_ITERATIONS);
 		
 		return gm;
+	}
+
+	@Override
+	public Dataset<Row> transform(Dataset<Row> data) {
+		return gmm.transform(data);
 	}
 
 }

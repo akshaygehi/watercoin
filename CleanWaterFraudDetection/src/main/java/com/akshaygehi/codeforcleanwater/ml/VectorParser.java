@@ -13,7 +13,6 @@ public class VectorParser {
 		
 		return input;
 
-		//		return data2.map(cols -> {
 //			
 //			int size = cols.size();
 //			double[] values = new double[size - 2];

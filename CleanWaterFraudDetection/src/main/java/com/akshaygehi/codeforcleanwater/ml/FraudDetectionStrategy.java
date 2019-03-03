@@ -8,6 +8,8 @@ public interface FraudDetectionStrategy {
 	
 	void trainModel(Dataset<Row> data);
 	
+	Dataset<Row> transform(Dataset<Row> data);
+	
 	PipelineStage getStage();
 	
 	void saveModel();

@@ -58,5 +58,10 @@ public class KmeansFraudDetectionStrategy implements FraudDetectionStrategy {
 		KMeans kmeans = new KMeans().setK(NUMBER_OF_CLUSTERS_K).setMaxIter(MAX_ITERATIONS);
 		return kmeans;
 	}
+	
+	@Override
+	public Dataset<Row> transform(Dataset<Row> data) {
+		return model.transform(data);
+	}
 
 }
