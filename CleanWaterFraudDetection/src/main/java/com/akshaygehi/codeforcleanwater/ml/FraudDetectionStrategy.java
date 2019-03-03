@@ -1,11 +1,14 @@
 package com.akshaygehi.codeforcleanwater.ml;
 
-import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.mllib.linalg.Vector;
+import org.apache.spark.ml.PipelineStage;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
 
 public interface FraudDetectionStrategy {
 	
-	void trainModel(JavaRDD<Vector> data);
+	void trainModel(Dataset<Row> data);
+	
+	PipelineStage getStage();
 	
 	void saveModel();
 	
